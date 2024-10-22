@@ -10,7 +10,9 @@ function getComputerChoice() {
     else{
         choice = "scissors";
     }
-    console.log(choice);
+    return choice;
 }
-
-getComputerChoice();
+function getHumanChoice() {
+    let hChoice = prompt("Choose between rock, paper and scissors:");
+    return hChoice;
+}
