@@ -2,56 +2,66 @@ let humanScore = 0;
 let computerScore = 0;
 
 function getComputerChoice() {
-    let num = Math.floor(Math.random()*100) + 1;
+    let num = Math.floor(Math.random() * 100) + 1;
     let choice;
-    if(num < 33){
+    if (num < 33) {
         choice = "rock";
-    }
-    else if(num > 33 && num < 66){
+    } else if (num > 33 && num < 66) {
         choice = "paper";
-    }
-    else{
+    } else {
         choice = "scissors";
     }
     return choice;
 }
-function getHumanChoice() {
-    let hChoice = prompt("Choose between rock, paper and scissors:");
-    return hChoice;
-}
+
 function playRound(humanChoice, computerChoice) {
-    if(humanChoice === computerChoice){
-        console.log(`Draw! Both drew ${humanChoice}.`);
-    }
-    else if((humanChoice === "paper" && computerChoice === "rock") || (humanChoice === "scissors" && computerChoice === "paper") || (humanChoice === "rock" && computerChoice === "scissors")){
-        console.log(`You won! ${humanChoice} beats ${computerChoice}`);
+    if ((humanChoice === "paper" && computerChoice === "rock") ||
+               (humanChoice === "scissors" && computerChoice === "paper") ||
+               (humanChoice === "rock" && computerChoice === "scissors")) {
         humanScore++;
-    }
-    else{
-        console.log(`You lost! ${computerChoice} beats ${humanChoice}`);
+    } else {
         computerScore++;
     }
 }
+
 function playGame() {
-    let round = 1;
-    while(round <= 5){
-        let huChoice = getHumanChoice();
-        let compChoice = getComputerChoice();
-        playRound(huChoice, compChoice);
-        console.log(`Human: ${humanScore}, Computer: ${computerScore}`)
-        round++;
+    const body = document.querySelector('body');
+    
+    const bt1 = document.createElement('button');
+    const bt2 = document.createElement('button');
+    const bt3 = document.createElement('button');
+
+    bt1.textContent = 'Rock';
+    bt2.textContent = 'Paper';
+    bt3.textContent = 'Scissors';
+
+    body.appendChild(bt1);
+    body.appendChild(bt2);
+    body.appendChild(bt3);
+
+    const div = document.createElement('div');
+    body.appendChild(div);
+
+    function handleRound(humanChoice) {
+        const compChoice = getComputerChoice();
+        playRound(humanChoice, compChoice);
+        div.textContent = `Human: ${humanScore}, Computer: ${computerScore}`;
+
+        if (humanScore + computerScore >= 5) {
+            if (humanScore > computerScore) {
+                div.textContent += `\nYou win!`;
+            } else if (humanScore < computerScore) {
+                div.textContent += `\nYou lose!`;
+            } else {
+                div.textContent += `\nDraw!`;
+            }
+            div.textContent += `\nFinal Score:\nHuman: ${humanScore}, Computer: ${computerScore}`;
+        }
     }
-    console.log("Game over!");
-    if(humanScore > computerScore) {
-        console.log(`You win!`);
-    }
-    else if(humanScore < computerScore) {
-        console.log(`You lose!`);
-    }
-    else {
-        console.log(`Draw!`)
-    }
-    console.log(`Final Score:\nHuman: ${humanScore}, Computer: ${computerScore}`)
+
+    bt1.addEventListener('click', () => handleRound('rock'));
+    bt2.addEventListener('click', () => handleRound('paper'));
+    bt3.addEventListener('click', () => handleRound('scissors'));
 }
 
 playGame();
